@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/rs"/>
+    <qresource prefix="/rs/fonts">
+        <file>fonts/Vollkorn/Vollkorn-Black.ttf</file>
+        <file>fonts/Vollkorn/Vollkorn-Regular.ttf</file>
+        <file>fonts/Vollkorn/Vollkorn-Bold.ttf</file>
+    </qresource>
+    <qresource prefix="/rs/images">
+        <file>images/class_schedule_left_arrow.png</file>
+        <file>images/class_schedule_right_arrow.png</file>
+    </qresource>
+</RCC>
