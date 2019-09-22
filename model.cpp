@@ -41,7 +41,7 @@ void Model::loadModel(const QString& fileName)
     /*for (auto v : model) {
         qDebug() << v.first << endl;
         for (auto& t : v.second) {
-            qDebug() << t.start << " " << t.finish << endl;
+            qDebug() << t.day2 << " " << t.start << " " << t.finish << endl;
         }
     }*/
 }
@@ -96,10 +96,28 @@ auto Model::scheduleTimeTable(TimeTable& tTable)
     // Consider rest of the activities
     for (size_t j = 1; j < tTable.size(); j++)
     {
+        /*if(tTable[i].second < tTable[j].second)
+        {
+            qDebug() << "Earlier: " << tTable[i].second.day2 << " " << tTable[i].second.start << " " << tTable[i].second.finish;
+            qDebug() << "Later: " << tTable[j].second.day2 << " " << tTable[j].second.start << " " << tTable[j].second.finish;
+
+        }
+        else {
+            qDebug() << "No";
+        }*/
       // If this activity has start time greater than or
       // equal to the finish time of previously selected
       // activity, then select it
-        if (tTable[j].second.start >= tTable[i].second.finish)
+
+        /*if (tTable[j].second.start >= tTable[i].second.finish)
+        {
+            ret.add(tTable[j]);
+            i = j;
+        }*/
+
+        //TODO: Test for different days
+        //if(tTable[j].second.start >= tTable[i].second.finish && tTable[j].second.day == tTable[i].second.day)
+        if (tTable[j].second >= tTable[i].second)
         {
             ret.add(tTable[j]);
             i = j;

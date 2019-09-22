@@ -27,8 +27,9 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::build5DayTable()
 {
     auto workDays = {"Monday", "Tuesday", "Wednday", "Thursday", "Friday"};
+    auto workHours = {"8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21"};
 
-    table->setRowCount(10);
+    table->setRowCount(14);
     table->setColumnCount(5);
     table->horizontalHeader()->setMinimumHeight(50);
 
@@ -48,8 +49,16 @@ void MainWindow::build5DayTable()
     }
     table->horizontalHeader()->resizeSections(QHeaderView::Stretch);
 
-    QTableWidgetItem *newItem = new QTableWidgetItem(tr("hekki"));
-    table->setItem(2, 1, newItem);
+    hCount = 0;
+    for(auto hours : workHours)
+    {
+        qDebug() << hCount;
+        QTableWidgetItem* hDay = new QTableWidgetItem(tr(hours));
+        hDay->setFont(font);
+        table->setVerticalHeaderItem(hCount, hDay);
+        ++hCount;
+    }
+    table->verticalHeader()->resizeSections(QHeaderView::Stretch);
 
 }
 
@@ -76,9 +85,10 @@ void MainWindow::printTable(const TimeTable& tTable)
     for (size_t i = 0; i < tTable.size(); ++i)
     {
         auto& [name, interval] = tTable[i];
-        //QTableWidgetItem* newItem = new QTableWidgetItem(name);
+        qDebug() << interval.day2;
+        QTableWidgetItem* newItem = new QTableWidgetItem(name);
         //table->setItem(2, 1, newItem);
-        qDebug() << name;
+        //qDebug() << name;
 
     }
 }

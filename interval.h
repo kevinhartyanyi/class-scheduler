@@ -2,21 +2,39 @@
 #define INTERVAL_H
 
 #include <QStringList>
+#include <QDebug>
+
+enum class Days
+{
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday,
+    Sunday
+};
 
 struct Interval
 {
     int start;
     int finish;
+    Days day;
+    QString day2;
     Interval(QStringList interval);
 };
 
 inline bool operator== (const Interval& left, const Interval& right){
-    return left.start == right.start && left.finish == right.finish;
+    return left.start == right.start && left.finish == right.finish && left.day == right.day;
 }
 
 inline bool operator< (const Interval& left, const Interval& right){
-    return left.finish < right.finish;
+    return left.day < right.day || (left.day == right.day && left.finish < right.finish);
 }
+inline bool operator> (const Interval& left, const Interval& right){return  operator< (right,left);}
+inline bool operator<=(const Interval& left, const Interval& right){return !operator> (left,right);}
+inline bool operator>=(const Interval& left, const Interval& right){return !operator< (left,right);}
+inline bool operator!=(const Interval& left, const Interval& right){return !operator==(left,right);}
 
 inline std::ostream& operator<<(std::ostream& os, const Interval& intval)
 {
