@@ -97,6 +97,8 @@
      <string>Actions</string>
     </property>
     <addaction name="actionSchedule"/>
+    <addaction name="actionNext"/>
+    <addaction name="actionPrevious"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuActions"/>
@@ -117,6 +119,16 @@
   <action name="actionSchedule">
    <property name="text">
     <string>Schedule</string>
+   </property>
+  </action>
+  <action name="actionNext">
+   <property name="text">
+    <string>Next</string>
+   </property>
+  </action>
+  <action name="actionPrevious">
+   <property name="text">
+    <string>Previous</string>
    </property>
   </action>
  </widget>

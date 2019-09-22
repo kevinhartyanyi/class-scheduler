@@ -26,10 +26,13 @@ private slots:
     void on_actionSchedule_triggered();
 
 private:
+    int getColumnIndex(Days day);
+
     Ui::MainWindow *ui;
     QTableWidget* table;
     Data data;
     Model model;
+    size_t tIndex;
 };
 
 #endif // MAINWINDOW_H

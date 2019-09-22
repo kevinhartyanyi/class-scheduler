@@ -80,6 +80,28 @@ void MainWindow::on_actionSchedule_triggered()
     printTable(model.get(0));
 }
 
+int MainWindow::getColumnIndex(Days day)
+{
+    switch (day)
+    {
+        case Days::Monday:
+            return 0;
+        case Days::Tuesday:
+            return 1;
+        case Days::Wednesday:
+            return 2;
+        case Days::Thursday:
+            return 3;
+        case Days::Friday:
+            return 4;
+        case Days::Saturday:
+            return 5;
+        case Days::Sunday:
+            return 6;
+
+    }
+}
+
 void MainWindow::printTable(const TimeTable& tTable)
 {
     for (size_t i = 0; i < tTable.size(); ++i)
@@ -87,7 +109,7 @@ void MainWindow::printTable(const TimeTable& tTable)
         auto& [name, interval] = tTable[i];
         qDebug() << interval.day2;
         QTableWidgetItem* newItem = new QTableWidgetItem(name);
-        //table->setItem(2, 1, newItem);
+        table->setItem(interval.start - 8, getColumnIndex(interval.day), newItem);
         //qDebug() << name;
 
     }

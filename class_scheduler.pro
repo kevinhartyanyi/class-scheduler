@@ -36,6 +36,7 @@ SOURCES += \
 
 HEADERS += \
         data.h \
+        days.h \
         interval.h \
         mainwindow.h \
         model.h \

@@ -3,17 +3,7 @@
 
 #include <QStringList>
 #include <QDebug>
-
-enum class Days
-{
-    Monday,
-    Tuesday,
-    Wednesday,
-    Thursday,
-    Friday,
-    Saturday,
-    Sunday
-};
+#include "days.h"
 
 struct Interval
 {

@@ -8,6 +8,7 @@
 #include <QString>
 #include <vector>
 #include <timetable.h>
+#include <QtDebug>
 
 class Model
 {
@@ -16,7 +17,13 @@ public:
     Model() {}
     void loadModel(const QString& fileName);
     void schedule();
-    auto get(size_t idx) const {return timeTables[idx];}
+    auto get(size_t idx) const {
+        auto t = timeTables[idx];
+        for (int i = 0; i < t.size(); ++i) {
+            qDebug() << t[i].first << " " << t[i].second.start << " " << t[i].second.finish;
+        }
+        return timeTables[idx];
+    }
 
 private:    
     auto cartProduct() const;
