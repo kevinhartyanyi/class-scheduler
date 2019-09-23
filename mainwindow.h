@@ -25,6 +25,10 @@ private slots:
     void on_newSchedule_triggered();
     void on_actionSchedule_triggered();
 
+    void on_actionNext_triggered();
+
+    void on_actionPrevious_triggered();
+
 private:
     int getColumnIndex(Days day);
 

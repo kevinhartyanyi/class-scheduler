@@ -17,10 +17,14 @@ public:
     Model() {}
     void loadModel(const QString& fileName);
     void schedule();
+    size_t size() {return timeTables.size();}
     auto get(size_t idx) const {
         auto t = timeTables[idx];
+        qDebug() << "TTTTTTTTTTTTTTTTTTTTTTTTTT";
+        t.printDebug();
+        qDebug() << "TTTTTTTTTTTTTTTTTTTTTTTTTT";
         for (int i = 0; i < t.size(); ++i) {
-            qDebug() << t[i].first << " " << t[i].second.start << " " << t[i].second.finish;
+            //qDebug() << t[i].first << " " << t[i].second.start << " " << t[i].second.finish;
         }
         return timeTables[idx];
     }

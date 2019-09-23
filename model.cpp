@@ -88,8 +88,11 @@ auto Model::scheduleTimeTable(TimeTable& tTable)
 {
     TimeTable ret;
     // Sort jobs according to finish time
-    tTable.sort();
 
+    tTable.printDebug();
+    qDebug() << "aaaaaaaa";
+    tTable.sort();
+    tTable.printDebug();
     // The first activity always gets selected
     size_t i = 0;
     ret.add(tTable[0]);
@@ -109,20 +112,20 @@ auto Model::scheduleTimeTable(TimeTable& tTable)
       // equal to the finish time of previously selected
       // activity, then select it
 
+        /*if (tTable[j].second.start >= tTable[i].second.finish)
+        {
+            ret.add(tTable[j]);
+            i = j;
+        }*/
+
+        //TODO: Test for different days
+        //if(tTable[j].second.start >= tTable[i].second.finish && tTable[j].second.day == tTable[i].second.day)
+
         if (tTable[j].second.start >= tTable[i].second.finish)
         {
             ret.add(tTable[j]);
             i = j;
         }
-
-        //TODO: Test for different days
-        //if(tTable[j].second.start >= tTable[i].second.finish && tTable[j].second.day == tTable[i].second.day)
-        /*
-        if (tTable[j].second >= tTable[i].second)
-        {
-            ret.add(tTable[j]);
-            i = j;
-        }*/
     }
     return ret;
 }

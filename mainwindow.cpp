@@ -13,14 +13,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     table = ui->timeTable;
     build5DayTable();
+
     QPixmap pixmap(":/rs/images/images/class_schedule_left_arrow.png");
     QIcon ButtonIcon(pixmap);
     ui->leftArrow->setText("");
     ui->leftArrow->setMinimumSize(10,100);
     ui->leftArrow->setStyleSheet("border-image:url(:/rs/images/images/class_schedule_left_arrow.png);");
+    ui->leftArrow->setAction(ui->actionPrevious);
     ui->rightArrow->setText("");
     ui->rightArrow->setMinimumSize(10,100);
     ui->rightArrow->setStyleSheet("border-image:url(:/rs/images/images/class_schedule_right_arrow.png);");
+    ui->rightArrow->setAction(ui->actionNext);
     //saveTable();
 }
 
@@ -76,8 +79,22 @@ void MainWindow::on_newSchedule_triggered()
 
 void MainWindow::on_actionSchedule_triggered()
 {
+    tIndex = 0;
     model.schedule();
-    printTable(model.get(0));
+    printTable(model.get(tIndex));
+}
+
+void MainWindow::printTable(const TimeTable& tTable)
+{
+    table->clearContents();
+    table->clearSpans();
+    for (size_t i = 0; i < tTable.size(); ++i)
+    {
+        auto& [name, interval] = tTable[i];
+        QTableWidgetItem* newItem = new QTableWidgetItem(name);
+        table->setItem(interval.start - 8, getColumnIndex(interval.day), newItem);
+        table->setSpan(interval.start - 8, getColumnIndex(interval.day), interval.finish - interval.start, 1);
+    }
 }
 
 int MainWindow::getColumnIndex(Days day)
@@ -102,15 +119,16 @@ int MainWindow::getColumnIndex(Days day)
     }
 }
 
-void MainWindow::printTable(const TimeTable& tTable)
+void MainWindow::on_actionNext_triggered()
 {
-    for (size_t i = 0; i < tTable.size(); ++i)
-    {
-        auto& [name, interval] = tTable[i];
-        qDebug() << interval.day2;
-        QTableWidgetItem* newItem = new QTableWidgetItem(name);
-        table->setItem(interval.start - 8, getColumnIndex(interval.day), newItem);
-        //qDebug() << name;
+    if(tIndex == model.size() - 1) return;
+    ++tIndex;
+    printTable(model.get(tIndex));
+}
 
-    }
+void MainWindow::on_actionPrevious_triggered()
+{
+    if(tIndex == 0) return;
+    --tIndex;
+    printTable(model.get(tIndex));
 }

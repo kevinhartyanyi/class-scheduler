@@ -27,6 +27,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++17
 
 SOURCES += \
+        actionbutton.cpp \
         data.cpp \
         interval.cpp \
         main.cpp \
@@ -35,6 +36,7 @@ SOURCES += \
         timetable.cpp
 
 HEADERS += \
+        actionbutton.h \
         data.h \
         days.h \
         interval.h \
