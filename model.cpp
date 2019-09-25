@@ -136,6 +136,8 @@ void Model::schedule()
     timeTables.clear();
     for (auto& tTable : allProduct)
     {
-        timeTables.push_back(scheduleTimeTable(tTable));
+        auto stTable = scheduleTimeTable(tTable);
+        stTable.colourize();
+        timeTables.push_back(stTable);
     }
 }

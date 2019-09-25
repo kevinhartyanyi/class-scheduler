@@ -5,6 +5,9 @@
 #include <QFontDatabase>
 #include <QFileDialog>
 #include <QDir>
+#include <cstdlib>
+#include <ctime>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     table = ui->timeTable;
     build5DayTable();
+
+    srand (static_cast <unsigned> (time(nullptr)));
 
     QPixmap pixmap(":/rs/images/images/class_schedule_left_arrow.png");
     QIcon ButtonIcon(pixmap);
@@ -83,6 +88,8 @@ void MainWindow::on_actionSchedule_triggered()
     model.schedule();
     printTable(model.get(tIndex));
 }
+//input: ratio is between 0 to 1
+//output: rgb color
 
 void MainWindow::printTable(const TimeTable& tTable)
 {
@@ -90,10 +97,13 @@ void MainWindow::printTable(const TimeTable& tTable)
     table->clearSpans();
     for (size_t i = 0; i < tTable.size(); ++i)
     {
+
         auto& [name, interval] = tTable[i];
         QTableWidgetItem* newItem = new QTableWidgetItem(name);
+        newItem->setBackground(tTable.getColour(i));
         table->setItem(interval.start - 8, getColumnIndex(interval.day), newItem);
-        table->setSpan(interval.start - 8, getColumnIndex(interval.day), interval.finish - interval.start, 1);
+        if(interval.finish - interval.start > 1)
+            table->setSpan(interval.start - 8, getColumnIndex(interval.day), interval.finish - interval.start, 1);
     }
 }
 
