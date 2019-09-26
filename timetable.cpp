@@ -17,19 +17,14 @@ void TimeTable::colourize()
 {
     colours.clear();
     colours.reserve(tTable.size());
-    qDebug() << "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCc";
+    float offset = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     for (size_t i = 0; i < tTable.size(); ++i)
     {
-        float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-        qDebug() << "Offset: " << r;
-        qDebug() << "Offset + GoldR: " << r + (0.618033988749895f * i);
-        qDebug() << "Fmod: " << fmod(r + (0.618033988749895f * i), float(1));
-        qDebug() << "Gradient:" << gradient(fmod(r + (0.618033988749895f * i), float(1)));
+        float r2 = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/360));
         QColor colour;
-        colour.setRgb(gradient(fmod(r + (0.618033988749895f * i), float(1))));
+        colour.setHsv((fmod(offset + (0.618033988749895f * i), static_cast <float>(1))) * 360, 76, 240);
         colours.push_back(colour);
     }
-    qDebug() << "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCc";
 }
 
 unsigned int TimeTable::gradient(float ratio) const

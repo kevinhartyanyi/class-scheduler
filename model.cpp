@@ -121,7 +121,8 @@ auto Model::scheduleTimeTable(TimeTable& tTable)
         //TODO: Test for different days
         //if(tTable[j].second.start >= tTable[i].second.finish && tTable[j].second.day == tTable[i].second.day)
 
-        if (tTable[j].second.start >= tTable[i].second.finish)
+        // If start time is bigger than the last's finish or it's a different day, then add it (works because of the sorting)
+        if (tTable[j].second.start >= tTable[i].second.finish || tTable[j].second.day != tTable[i].second.day)
         {
             ret.add(tTable[j]);
             i = j;
@@ -132,7 +133,12 @@ auto Model::scheduleTimeTable(TimeTable& tTable)
 
 void Model::schedule()
 {
+    qDebug() << "CartProducts: ";
     auto allProduct = cartProduct();
+    for (auto var : allProduct) {
+        var.printDebug();
+        qDebug() << "------------------------------";
+    }
     timeTables.clear();
     for (auto& tTable : allProduct)
     {

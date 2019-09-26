@@ -109,6 +109,7 @@
     <addaction name="actionSchedule"/>
     <addaction name="actionNext"/>
     <addaction name="actionPrevious"/>
+    <addaction name="actionRecolour"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuActions"/>
@@ -139,6 +140,11 @@
   <action name="actionPrevious">
    <property name="text">
     <string>Previous</string>
+   </property>
+  </action>
+  <action name="actionRecolour">
+   <property name="text">
+    <string>Recolour</string>
    </property>
   </action>
  </widget>

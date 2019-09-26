@@ -29,6 +29,8 @@ private slots:
 
     void on_actionPrevious_triggered();
 
+    void on_actionRecolour_triggered();
+
 private:
     int getColumnIndex(Days day);
 

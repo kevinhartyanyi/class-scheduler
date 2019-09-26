@@ -18,7 +18,7 @@ public:
     void loadModel(const QString& fileName);
     void schedule();
     size_t size() {return timeTables.size();}
-    auto get(size_t idx) const {
+    auto& get(size_t idx) const { //TODO: replace get with []
         auto t = timeTables[idx];
         qDebug() << "TTTTTTTTTTTTTTTTTTTTTTTTTT";
         t.printDebug();
@@ -28,6 +28,7 @@ public:
         }
         return timeTables[idx];
     }
+    auto& operator[](size_t idx) {return timeTables[idx];}
 
 private:    
     auto cartProduct() const;

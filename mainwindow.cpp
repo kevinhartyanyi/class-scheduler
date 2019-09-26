@@ -142,3 +142,10 @@ void MainWindow::on_actionPrevious_triggered()
     --tIndex;
     printTable(model.get(tIndex));
 }
+
+void MainWindow::on_actionRecolour_triggered()
+{
+    auto& tTable = model[tIndex];
+    tTable.colourize();
+    printTable(tTable);
+}
