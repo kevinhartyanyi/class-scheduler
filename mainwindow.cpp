@@ -17,8 +17,24 @@ MainWindow::MainWindow(QWidget *parent) :
     table = ui->timeTable;
     build5DayTable();
 
-    srand (static_cast <unsigned> (time(nullptr)));
+    int fontId = QFontDatabase::addApplicationFont(":/rs/fonts/fonts/Vollkorn/Vollkorn-Regular.ttf");
+    QString family = QFontDatabase::applicationFontFamilies(fontId).at(0);
+    QFont font(family);
+    font.setBold(true);
+    font.setWeight(QFont::Bold);
+    ui->info2->setRowCount(2);
+    ui->info2->setColumnCount(2);
+    ui->info2->verticalHeader()->hide();
+    ui->info2->setStyleSheet("gridline-color: white;");
 
+    srand (static_cast <unsigned> (time(nullptr)));
+    setupButtons();
+
+    //saveTable();
+}
+
+void MainWindow::setupButtons()
+{
     QPixmap pixmap(":/rs/images/images/class_schedule_left_arrow.png");
     QIcon ButtonIcon(pixmap);
     ui->leftArrow->setText("");
@@ -29,7 +45,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->rightArrow->setMinimumSize(10,100);
     ui->rightArrow->setStyleSheet("border-image:url(:/rs/images/images/class_schedule_right_arrow.png);");
     ui->rightArrow->setAction(ui->actionNext);
-    //saveTable();
 }
 
 void MainWindow::build5DayTable()
@@ -75,6 +90,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::printInfo()
+{
+    QTableWidgetItem* freeTime = new QTableWidgetItem("Free time between classes:");
+    ui->info2->setItem(0,0, freeTime);
+    QTableWidgetItem* daysOff = new QTableWidgetItem("Days off:");
+    ui->info2->setItem(1,0, daysOff);
+
+    ui->info->addItem("Free time between classes: ");
+    ui->info->addItem("Days off: ");
+}
+
 void MainWindow::on_newSchedule_triggered()
 {
     QString filter = "All file (*.*) ;; Recommended (*.csv *.txt)";
@@ -88,8 +114,6 @@ void MainWindow::on_actionSchedule_triggered()
     model.schedule();
     printTable(model.get(tIndex));
 }
-//input: ratio is between 0 to 1
-//output: rgb color
 
 void MainWindow::printTable(const TimeTable& tTable)
 {
@@ -105,6 +129,7 @@ void MainWindow::printTable(const TimeTable& tTable)
         if(interval.finish - interval.start > 1)
             table->setSpan(interval.start - 8, getColumnIndex(interval.day), interval.finish - interval.start, 1);
     }
+    printInfo();
 }
 
 int MainWindow::getColumnIndex(Days day)

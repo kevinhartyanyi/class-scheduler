@@ -33,6 +33,8 @@ private slots:
 
 private:
     int getColumnIndex(Days day);
+    void setupButtons();
+    void printInfo();
 
     Ui::MainWindow *ui;
     QTableWidget* table;
