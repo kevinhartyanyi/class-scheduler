@@ -15,22 +15,39 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     table = ui->timeTable;
+    table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     build5DayTable();
 
     int fontId = QFontDatabase::addApplicationFont(":/rs/fonts/fonts/Vollkorn/Vollkorn-Regular.ttf");
     QString family = QFontDatabase::applicationFontFamilies(fontId).at(0);
-    QFont font(family);
+    font.setFamily(family);
     font.setBold(true);
     font.setWeight(QFont::Bold);
-    ui->info2->setRowCount(2);
-    ui->info2->setColumnCount(2);
-    ui->info2->verticalHeader()->hide();
-    ui->info2->setStyleSheet("gridline-color: white;");
+
 
     srand (static_cast <unsigned> (time(nullptr)));
     setupButtons();
+    setupInfo();
 
     //saveTable();
+}
+
+void MainWindow::setupInfo()
+{
+    ui->info->setRowCount(2);
+    ui->info->setColumnCount(2);
+    ui->info->verticalHeader()->hide();
+    ui->info->setStyleSheet("gridline-color: white;");
+    ui->info->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    font.setBold(false);
+    QTableWidgetItem* property = new QTableWidgetItem("Property");
+    property->setFont(font);
+    ui->info->setHorizontalHeaderItem(0, property);
+    QTableWidgetItem* value = new QTableWidgetItem("Value");
+    value->setFont(font);
+    ui->info->setHorizontalHeaderItem(1, value);
+    ui->info->horizontalHeader()->resizeSections(QHeaderView::Stretch);
+    ui->info->verticalHeader()->resizeSections(QHeaderView::Stretch);
 }
 
 void MainWindow::setupButtons()
@@ -92,13 +109,22 @@ MainWindow::~MainWindow()
 
 void MainWindow::printInfo()
 {
-    QTableWidgetItem* freeTime = new QTableWidgetItem("Free time between classes:");
-    ui->info2->setItem(0,0, freeTime);
-    QTableWidgetItem* daysOff = new QTableWidgetItem("Days off:");
-    ui->info2->setItem(1,0, daysOff);
+    font.setBold(false);
+    QTableWidgetItem* emptyTime = new QTableWidgetItem("Empty time between classes:");
+    emptyTime->setFont(font);
+    ui->info->setItem(0,0, emptyTime);
 
-    ui->info->addItem("Free time between classes: ");
-    ui->info->addItem("Days off: ");
+    QTableWidgetItem* emptyTimeValue = new QTableWidgetItem(QString::number(model[tIndex].getEmptyHours()) + " hours");
+    emptyTimeValue->setFont(font);
+    ui->info->setItem(0,1, emptyTimeValue);
+
+    QTableWidgetItem* daysOff = new QTableWidgetItem("Days off:");
+    daysOff->setFont(font);
+    ui->info->setItem(1,0, daysOff);
+
+    QTableWidgetItem* daysOffValue = new QTableWidgetItem(QString::number(model[tIndex].getDaysOff()) + " days");
+    daysOffValue->setFont(font);
+    ui->info->setItem(1,1, daysOffValue);
 }
 
 void MainWindow::on_newSchedule_triggered()
@@ -158,14 +184,14 @@ void MainWindow::on_actionNext_triggered()
 {
     if(tIndex == model.size() - 1) return;
     ++tIndex;
-    printTable(model.get(tIndex));
+    printTable(model[tIndex]);
 }
 
 void MainWindow::on_actionPrevious_triggered()
 {
     if(tIndex == 0) return;
     --tIndex;
-    printTable(model.get(tIndex));
+    printTable(model[tIndex]);
 }
 
 void MainWindow::on_actionRecolour_triggered()
@@ -173,4 +199,32 @@ void MainWindow::on_actionRecolour_triggered()
     auto& tTable = model[tIndex];
     tTable.colourize();
     printTable(tTable);
+}
+
+void MainWindow::on_actionBy_Empty_Hours_triggered()
+{
+    tIndex = 0;
+    model.sortByEmptyHours();
+    printTable(model[tIndex]);
+}
+
+void MainWindow::on_actionBy_Days_Off_triggered()
+{
+    tIndex = 0;
+    model.sortByDaysOff();
+    printTable(model[tIndex]);
+}
+
+void MainWindow::on_actionReverse_Days_Off_triggered()
+{
+    tIndex = 0;
+    model.sortByDaysOffReverse();
+    printTable(model[tIndex]);
+}
+
+void MainWindow::on_actionReverse_Empty_Hours_triggered()
+{
+    tIndex = 0;
+    model.sortByEmptyHoursReverse();
+    printTable(model[tIndex]);
 }

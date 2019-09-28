@@ -147,3 +147,21 @@ void Model::schedule()
         timeTables.push_back(stTable);
     }
 }
+
+void Model::sortByEmptyHours()
+{
+    std::sort(timeTables.begin(), timeTables.end(),[](const auto& left, const auto& right){return left.getEmptyHours() < right.getEmptyHours();});
+}
+void Model::sortByDaysOff()
+{
+    std::sort(timeTables.begin(), timeTables.end(),[](const auto& left, const auto& right){return left.getDaysOff() > right.getDaysOff();});
+}
+void Model::sortByEmptyHoursReverse()
+{
+    std::sort(timeTables.begin(), timeTables.end(),[](const auto& left, const auto& right){return left.getEmptyHours() > right.getEmptyHours();});
+}
+void Model::sortByDaysOffReverse()
+{
+    std::sort(timeTables.begin(), timeTables.end(),[](const auto& left, const auto& right){return left.getDaysOff() < right.getDaysOff();});
+}
+

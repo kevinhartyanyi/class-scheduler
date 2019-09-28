@@ -16,6 +16,8 @@ public:
     void printDebug();
     void sort();
     void colourize();
+    int getEmptyHours() const;
+    int getDaysOff() const; // Only call after sort
     QColor getColour(size_t idx) const {return colours[idx];}
     size_t size() const {return tTable.size();}
     const auto& operator[](size_t idx) const {return tTable[idx];}

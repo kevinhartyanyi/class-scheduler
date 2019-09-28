@@ -31,9 +31,18 @@ private slots:
 
     void on_actionRecolour_triggered();
 
+    void on_actionBy_Empty_Hours_triggered();
+
+    void on_actionBy_Days_Off_triggered();
+
+    void on_actionReverse_Days_Off_triggered();
+
+    void on_actionReverse_Empty_Hours_triggered();
+
 private:
     int getColumnIndex(Days day);
     void setupButtons();
+    void setupInfo();
     void printInfo();
 
     Ui::MainWindow *ui;
@@ -41,6 +50,7 @@ private:
     Data data;
     Model model;
     size_t tIndex;
+    QFont font;
 };
 
 #endif // MAINWINDOW_H

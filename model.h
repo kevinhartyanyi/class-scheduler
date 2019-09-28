@@ -17,6 +17,10 @@ public:
     Model() {}
     void loadModel(const QString& fileName);
     void schedule();
+    void sortByEmptyHours();
+    void sortByDaysOff();
+    void sortByDaysOffReverse();
+    void sortByEmptyHoursReverse();
     size_t size() {return timeTables.size();}
     auto& get(size_t idx) const { //TODO: replace get with []
         auto t = timeTables[idx];
