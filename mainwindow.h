@@ -39,11 +39,17 @@ private slots:
 
     void on_actionReverse_Empty_Hours_triggered();
 
+    void on_actionClear_All_triggered();
+
+    void on_comboBox_activated(int index);
+
 private:
     int getColumnIndex(Days day);
     void setupButtons();
     void setupInfo();
     void printInfo();
+    void enableButtons();
+    void disableButtons();
 
     Ui::MainWindow *ui;
     QTableWidget* table;

@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     table = ui->timeTable;
     table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     build5DayTable();
+    disableButtons();
 
     int fontId = QFontDatabase::addApplicationFont(":/rs/fonts/fonts/Vollkorn/Vollkorn-Regular.ttf");
     QString family = QFontDatabase::applicationFontFamilies(fontId).at(0);
@@ -54,14 +55,16 @@ void MainWindow::setupButtons()
 {
     QPixmap pixmap(":/rs/images/images/class_schedule_left_arrow.png");
     QIcon ButtonIcon(pixmap);
-    ui->leftArrow->setText("");
     ui->leftArrow->setMinimumSize(10,100);
+    ui->leftArrow->setMaximumSize(200,200);
     ui->leftArrow->setStyleSheet("border-image:url(:/rs/images/images/class_schedule_left_arrow.png);");
-    ui->leftArrow->setAction(ui->actionPrevious);
-    ui->rightArrow->setText("");
-    ui->rightArrow->setMinimumSize(10,100);
+    ui->leftArrow->setAction(ui->actionPrevious);    
+    ui->leftArrow->setText("");
+    ui->rightArrow->setMinimumSize(10,100);    
+    ui->rightArrow->setMaximumSize(200,200);
     ui->rightArrow->setStyleSheet("border-image:url(:/rs/images/images/class_schedule_right_arrow.png);");
-    ui->rightArrow->setAction(ui->actionNext);
+    ui->rightArrow->setAction(ui->actionNext);    
+    ui->rightArrow->setText("");
 }
 
 void MainWindow::build5DayTable()
@@ -127,18 +130,23 @@ void MainWindow::printInfo()
     ui->info->setItem(1,1, daysOffValue);
 }
 
-void MainWindow::on_newSchedule_triggered()
+void MainWindow::enableButtons()
 {
-    QString filter = "All file (*.*) ;; Recommended (*.csv *.txt)";
-    QString fileName = QFileDialog::getOpenFileName(this, "Open data to schedule", QDir::homePath(), filter);
-    if(fileName != "") model.loadModel(fileName);
+    ui->actionNext->setEnabled(true);
+    ui->actionPrevious->setEnabled(true);
+    ui->actionClear_All->setEnabled(true);
+    ui->actionRecolour->setEnabled(true);
+    ui->menuSort->setEnabled(true);
+    ui->sortCombo->setEnabled(true);
 }
-
-void MainWindow::on_actionSchedule_triggered()
+void MainWindow::disableButtons()
 {
-    tIndex = 0;
-    model.schedule();
-    printTable(model.get(tIndex));
+    ui->actionNext->setEnabled(false);
+    ui->actionPrevious->setEnabled(false);
+    ui->actionClear_All->setEnabled(false);
+    ui->actionRecolour->setEnabled(false);
+    ui->menuSort->setEnabled(false);
+    ui->sortCombo->setEnabled(false);
 }
 
 void MainWindow::printTable(const TimeTable& tTable)
@@ -227,4 +235,38 @@ void MainWindow::on_actionReverse_Empty_Hours_triggered()
     tIndex = 0;
     model.sortByEmptyHoursReverse();
     printTable(model[tIndex]);
+}
+
+void MainWindow::on_actionClear_All_triggered()
+{
+    model.clear();
+    table->clearContents();
+    ui->info->clearContents();
+    disableButtons();
+}
+
+void MainWindow::on_newSchedule_triggered()
+{
+    QString filter = "All file (*.*) ;; Recommended (*.csv *.txt)";
+    QString fileName = QFileDialog::getOpenFileName(this, "Open data to schedule", QDir::homePath(), filter);
+    if(fileName != "")
+    {
+        model.loadModel(fileName);
+        enableButtons();
+    }
+}
+
+void MainWindow::on_actionSchedule_triggered()
+{
+    tIndex = 0;
+    model.schedule();
+    printTable(model.get(tIndex));
+}
+
+void MainWindow::on_comboBox_activated(int index)
+{
+    if(index == 0) on_actionBy_Empty_Hours_triggered();
+    else if(index == 1) on_actionReverse_Empty_Hours_triggered();
+    else if(index == 2) on_actionBy_Days_Off_triggered();
+    else if(index == 3) on_actionReverse_Days_Off_triggered();
 }
