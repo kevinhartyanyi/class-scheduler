@@ -24,7 +24,7 @@ public:
     void clear() {timeTables.clear(); model.clear();}
     size_t size() {return timeTables.size();}
     auto& get(size_t idx) const { //TODO: replace get with []
-        auto t = timeTables[idx];
+        auto& t = timeTables[idx];
         qDebug() << "TTTTTTTTTTTTTTTTTTTTTTTTTT";
         t.printDebug();
         qDebug() << "TTTTTTTTTTTTTTTTTTTTTTTTTT";

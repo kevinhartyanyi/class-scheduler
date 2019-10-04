@@ -6,6 +6,8 @@
 #include "data.h"
 #include "model.h"
 #include "timetable.h"
+#include <array>
+#include <random>
 
 namespace Ui {
 class MainWindow;
@@ -43,6 +45,8 @@ private slots:
 
     void on_comboBox_activated(int index);
 
+    void on_colourButton_clicked();
+
 private:
     int getColumnIndex(Days day);
     void setupButtons();
@@ -50,6 +54,7 @@ private:
     void printInfo();
     void enableButtons();
     void disableButtons();
+    void changeGradient();
 
     Ui::MainWindow *ui;
     QTableWidget* table;
@@ -57,6 +62,11 @@ private:
     Model model;
     size_t tIndex;
     QFont font;
+    const std::array<std::pair<QString,QString>, 5> gradients;
+
+    std::random_device r;
+    std::mt19937 engine;
+    std::uniform_int_distribution<size_t> distr;
 };
 
 #endif // MAINWINDOW_H

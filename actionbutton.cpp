@@ -39,7 +39,6 @@ void ActionButton::updateButtonStatusFromAction()
 {
     if (!actionOwner)
         return;
-    setText(actionOwner->text());
     setStatusTip(actionOwner->statusTip());
     setToolTip(actionOwner->toolTip());
     setEnabled(actionOwner->isEnabled());

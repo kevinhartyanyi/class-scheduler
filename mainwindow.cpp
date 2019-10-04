@@ -5,13 +5,14 @@
 #include <QFontDatabase>
 #include <QFileDialog>
 #include <QDir>
-#include <cstdlib>
-#include <ctime>
 
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow), engine(r()),  distr(0, gradients.size() - 1),
+    gradients{{{"#70e1f5","#ffd194"},{"#9d50bb", "#6e48aa"},
+               {"#b3ffab","#12fff7"},{"#f0c27b","#4b1248"},
+               {"#ff4e50","#f9d423"}}}
 {
     ui->setupUi(this);
     table = ui->timeTable;
@@ -26,7 +27,6 @@ MainWindow::MainWindow(QWidget *parent) :
     font.setWeight(QFont::Bold);
 
 
-    srand (static_cast <unsigned> (time(nullptr)));
     setupButtons();
     setupInfo();
 
@@ -55,16 +55,31 @@ void MainWindow::setupButtons()
 {
     QPixmap pixmap(":/rs/images/images/class_schedule_left_arrow.png");
     QIcon ButtonIcon(pixmap);
-    ui->leftArrow->setMinimumSize(10,100);
+    ui->leftArrow->setMinimumSize(100,100);
     ui->leftArrow->setMaximumSize(200,200);
     ui->leftArrow->setStyleSheet("border-image:url(:/rs/images/images/class_schedule_left_arrow.png);");
     ui->leftArrow->setAction(ui->actionPrevious);    
     ui->leftArrow->setText("");
-    ui->rightArrow->setMinimumSize(10,100);    
+
+    ui->rightArrow->setMinimumSize(100,100);
     ui->rightArrow->setMaximumSize(200,200);
     ui->rightArrow->setStyleSheet("border-image:url(:/rs/images/images/class_schedule_right_arrow.png);");
     ui->rightArrow->setAction(ui->actionNext);    
     ui->rightArrow->setText("");
+
+
+    ui->colourButton->setAction(ui->actionRecolour);
+    ui->colourButton->setText("");
+}
+
+void MainWindow::changeGradient()
+{
+    auto rIdx = distr(engine);
+    qDebug() << rIdx;
+    const auto& [grad1, grad2] = gradients[rIdx];
+
+    ui->colourButton->setStyleSheet("* {background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0.5, stop:0 " +
+                                    grad1 + ", stop:1 " + grad2 + ");}");
 }
 
 void MainWindow::build5DayTable()
@@ -155,7 +170,6 @@ void MainWindow::printTable(const TimeTable& tTable)
     table->clearSpans();
     for (size_t i = 0; i < tTable.size(); ++i)
     {
-
         auto& [name, interval] = tTable[i];
         QTableWidgetItem* newItem = new QTableWidgetItem(name);
         newItem->setBackground(tTable.getColour(i));
@@ -263,10 +277,17 @@ void MainWindow::on_actionSchedule_triggered()
     printTable(model.get(tIndex));
 }
 
-void MainWindow::on_comboBox_activated(int index)
+void MainWindow::on_comboBox_activated(int index) //TODO: Solve combobox
 {
     if(index == 0) on_actionBy_Empty_Hours_triggered();
     else if(index == 1) on_actionReverse_Empty_Hours_triggered();
     else if(index == 2) on_actionBy_Days_Off_triggered();
     else if(index == 3) on_actionReverse_Days_Off_triggered();
+}
+
+
+
+void MainWindow::on_colourButton_clicked()
+{
+    changeGradient();
 }
