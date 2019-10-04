@@ -47,8 +47,8 @@ void MainWindow::setupInfo()
     QTableWidgetItem* value = new QTableWidgetItem("Value");
     value->setFont(font);
     ui->info->setHorizontalHeaderItem(1, value);
-    ui->info->horizontalHeader()->resizeSections(QHeaderView::Stretch);
-    ui->info->verticalHeader()->resizeSections(QHeaderView::Stretch);
+    ui->info->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->info->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
 void MainWindow::setupButtons()
@@ -105,7 +105,7 @@ void MainWindow::build5DayTable()
         table->setHorizontalHeaderItem(hCount, hDay);
         ++hCount;
     }
-    table->horizontalHeader()->resizeSections(QHeaderView::Stretch);
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     hCount = 0;
     for(auto hours : workHours)
@@ -116,7 +116,7 @@ void MainWindow::build5DayTable()
         table->setVerticalHeaderItem(hCount, hDay);
         ++hCount;
     }
-    table->verticalHeader()->resizeSections(QHeaderView::Stretch);
+    table->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
 }
 
@@ -277,17 +277,16 @@ void MainWindow::on_actionSchedule_triggered()
     printTable(model.get(tIndex));
 }
 
-void MainWindow::on_comboBox_activated(int index) //TODO: Solve combobox
+void MainWindow::on_colourButton_clicked()
 {
+    changeGradient();
+}
+
+void MainWindow::on_sortCombo_currentIndexChanged(int index)
+{
+    qDebug() << index;
     if(index == 0) on_actionBy_Empty_Hours_triggered();
     else if(index == 1) on_actionReverse_Empty_Hours_triggered();
     else if(index == 2) on_actionBy_Days_Off_triggered();
     else if(index == 3) on_actionReverse_Days_Off_triggered();
-}
-
-
-
-void MainWindow::on_colourButton_clicked()
-{
-    changeGradient();
 }

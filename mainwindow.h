@@ -43,9 +43,9 @@ private slots:
 
     void on_actionClear_All_triggered();
 
-    void on_comboBox_activated(int index);
-
     void on_colourButton_clicked();
+
+    void on_sortCombo_currentIndexChanged(int index);
 
 private:
     int getColumnIndex(Days day);
