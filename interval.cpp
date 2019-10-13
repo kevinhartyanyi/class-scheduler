@@ -1,7 +1,7 @@
 #include "interval.h"
 #include <iostream>
 
-//TODO: Remove day2
+
 Interval::Interval(QStringList interval)
 {
     auto daySplit = interval.first().split(':');

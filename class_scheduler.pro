@@ -28,7 +28,6 @@ CONFIG += c++17
 
 SOURCES += \
         actionbutton.cpp \
-        data.cpp \
         interval.cpp \
         main.cpp \
         mainwindow.cpp \
@@ -37,7 +36,6 @@ SOURCES += \
 
 HEADERS += \
         actionbutton.h \
-        data.h \
         days.h \
         interval.h \
         mainwindow.h \

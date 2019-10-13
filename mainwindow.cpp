@@ -5,17 +5,16 @@
 #include <QFontDatabase>
 #include <QFileDialog>
 #include <QDir>
+#include <QDesktopWidget>
 
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow), engine(r()),  distr(0, gradients.size() - 1),
-    gradients{{{"#70e1f5","#ffd194"},{"#9d50bb", "#6e48aa"},
-               {"#b3ffab","#12fff7"},{"#f0c27b","#4b1248"},
-               {"#ff4e50","#f9d423"}}}
+    ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     table = ui->timeTable;
+    resize(QDesktopWidget().availableGeometry(this).size() * 0.7); // At start show the application with 70% of the screen size
     table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     build5DayTable();
     disableButtons();
@@ -26,11 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
     font.setBold(true);
     font.setWeight(QFont::Bold);
 
-
     setupButtons();
     setupInfo();
-
-    //saveTable();
 }
 
 void MainWindow::setupInfo()
@@ -67,34 +63,22 @@ void MainWindow::setupButtons()
     ui->rightArrow->setAction(ui->actionNext);    
     ui->rightArrow->setText("");
 
-
-    ui->colourButton->setAction(ui->actionRecolour);
-    ui->colourButton->setText("");
+    ui->middleButton->setAction(ui->actionSchedule);
+    ui->middleButton->setText(ui->actionSchedule->text());
 }
 
-void MainWindow::changeGradient()
-{
-    auto rIdx = distr(engine);
-    qDebug() << rIdx;
-    const auto& [grad1, grad2] = gradients[rIdx];
-
-    ui->colourButton->setStyleSheet("* {background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0.5, stop:0 " +
-                                    grad1 + ", stop:1 " + grad2 + ");}");
-}
 
 void MainWindow::build5DayTable()
 {
     auto workDays = {"Monday", "Tuesday", "Wednday", "Thursday", "Friday"};
     auto workHours = {"8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21"};
 
-    table->setRowCount(14);
-    table->setColumnCount(5);
+    table->setRowCount(static_cast<int>(workHours.size()));
+    table->setColumnCount(static_cast<int>(workDays.size()));
     table->horizontalHeader()->setMinimumHeight(50);
 
     int hCount = 0;
-    int fontId = QFontDatabase::addApplicationFont(":/rs/fonts/fonts/Vollkorn/Vollkorn-Regular.ttf");
-    QString family = QFontDatabase::applicationFontFamilies(fontId).at(0);
-    QFont font(family);
+
     font.setBold(true);
     font.setWeight(QFont::Bold);
 
@@ -110,7 +94,6 @@ void MainWindow::build5DayTable()
     hCount = 0;
     for(auto hours : workHours)
     {
-        qDebug() << hCount;
         QTableWidgetItem* hDay = new QTableWidgetItem(tr(hours));
         hDay->setFont(font);
         table->setVerticalHeaderItem(hCount, hDay);
@@ -150,9 +133,11 @@ void MainWindow::enableButtons()
     ui->actionNext->setEnabled(true);
     ui->actionPrevious->setEnabled(true);
     ui->actionClear_All->setEnabled(true);
-    ui->actionRecolour->setEnabled(true);
+    ui->actionRecolour->setEnabled(true);    
+    ui->actionSchedule->setEnabled(true);
     ui->menuSort->setEnabled(true);
     ui->sortCombo->setEnabled(true);
+    ui->menuActions->setEnabled(true);
 }
 void MainWindow::disableButtons()
 {
@@ -160,7 +145,9 @@ void MainWindow::disableButtons()
     ui->actionPrevious->setEnabled(false);
     ui->actionClear_All->setEnabled(false);
     ui->actionRecolour->setEnabled(false);
+    ui->actionSchedule->setEnabled(false);
     ui->menuSort->setEnabled(false);
+    ui->menuActions->setEnabled(false);
     ui->sortCombo->setEnabled(false);
 }
 
@@ -261,7 +248,7 @@ void MainWindow::on_actionClear_All_triggered()
 
 void MainWindow::on_newSchedule_triggered()
 {
-    QString filter = "All file (*.*) ;; Recommended (*.csv *.txt)";
+    QString filter = "Recommended (*.csv *.txt) ;; All file (*.*)";
     QString fileName = QFileDialog::getOpenFileName(this, "Open data to schedule", QDir::homePath(), filter);
     if(fileName != "")
     {
@@ -274,19 +261,14 @@ void MainWindow::on_actionSchedule_triggered()
 {
     tIndex = 0;
     model.schedule();
-    printTable(model.get(tIndex));
+    printTable(model[tIndex]);
 }
 
-void MainWindow::on_colourButton_clicked()
-{
-    changeGradient();
-}
 
 void MainWindow::on_sortCombo_currentIndexChanged(int index)
 {
-    qDebug() << index;
-    if(index == 0) on_actionBy_Empty_Hours_triggered();
-    else if(index == 1) on_actionReverse_Empty_Hours_triggered();
-    else if(index == 2) on_actionBy_Days_Off_triggered();
+    if(index == 0) on_actionBy_Empty_Hours_triggered();    
+    else if(index == 1) on_actionBy_Days_Off_triggered();
+    else if(index == 2) on_actionReverse_Empty_Hours_triggered();
     else if(index == 3) on_actionReverse_Days_Off_triggered();
 }

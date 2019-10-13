@@ -10,7 +10,7 @@ struct Interval
     int start;
     int finish;
     Days day;
-    QString day2;
+    QString day2; // For debugging
     Interval(QStringList interval);
 };
 

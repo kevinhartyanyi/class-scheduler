@@ -19,12 +19,17 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
+    /**
+     * @brief build5DayTable: Builds the empty table*/
     void build5DayTable();
+    /**
+     * @brief printTable: Prints the given TimeTable out*/
     void printTable(const TimeTable& tTable);
     ~MainWindow();
 
 private slots:
     void on_newSchedule_triggered();
+
     void on_actionSchedule_triggered();
 
     void on_actionNext_triggered();
@@ -43,8 +48,6 @@ private slots:
 
     void on_actionClear_All_triggered();
 
-    void on_colourButton_clicked();
-
     void on_sortCombo_currentIndexChanged(int index);
 
 private:
@@ -54,19 +57,12 @@ private:
     void printInfo();
     void enableButtons();
     void disableButtons();
-    void changeGradient();
 
     Ui::MainWindow *ui;
     QTableWidget* table;
-    Data data;
     Model model;
     size_t tIndex;
     QFont font;
-    const std::array<std::pair<QString,QString>, 5> gradients;
-
-    std::random_device r;
-    std::mt19937 engine;
-    std::uniform_int_distribution<size_t> distr;
 };
 
 #endif // MAINWINDOW_H

@@ -22,28 +22,18 @@ void Model::loadModel(const QString& fileName)
         }
         QString fieldName;
         std::set<Interval> intervalSet;
-        bool first = true;
-        for (auto field : fields)
+
+        // First item is the name of the activity
+        fieldName = fields[0];
+
+        for(int i = 1; i < fields.size(); ++i)
         {
-            if(first)
-            {
-                fieldName = field;
-                first = false;
-                continue;
-            }
-            auto rawInterval = field.split('-');
+            auto rawInterval = fields[i].split('-');
             intervalSet.insert(rawInterval);
         }
         model.emplace(fieldName, intervalSet);
     }
     file.close();
-
-    /*for (auto v : model) {
-        qDebug() << v.first << endl;
-        for (auto& t : v.second) {
-            qDebug() << t.day2 << " " << t.start << " " << t.finish << endl;
-        }
-    }*/
 }
 
 auto Model::cartProduct() const
@@ -89,37 +79,15 @@ auto Model::scheduleTimeTable(TimeTable& tTable)
     TimeTable ret;
     // Sort jobs according to finish time
 
-    tTable.printDebug();
-    qDebug() << "aaaaaaaa";
-    tTable.sort();
-    tTable.printDebug();
     // The first activity always gets selected
     size_t i = 0;
     ret.add(tTable[0]);
     // Consider rest of the activities
     for (size_t j = 1; j < tTable.size(); j++)
     {
-        /*if(tTable[i].second < tTable[j].second)
-        {
-            qDebug() << "Earlier: " << tTable[i].second.day2 << " " << tTable[i].second.start << " " << tTable[i].second.finish;
-            qDebug() << "Later: " << tTable[j].second.day2 << " " << tTable[j].second.start << " " << tTable[j].second.finish;
-
-        }
-        else {
-            qDebug() << "No";
-        }*/
       // If this activity has start time greater than or
       // equal to the finish time of previously selected
       // activity, then select it
-
-        /*if (tTable[j].second.start >= tTable[i].second.finish)
-        {
-            ret.add(tTable[j]);
-            i = j;
-        }*/
-
-        //TODO: Test for different days
-        //if(tTable[j].second.start >= tTable[i].second.finish && tTable[j].second.day == tTable[i].second.day)
 
         // If start time is bigger than the last's finish or it's a different day, then add it (works because of the sorting)
         if (tTable[j].second.start >= tTable[i].second.finish || tTable[j].second.day != tTable[i].second.day)
@@ -133,12 +101,7 @@ auto Model::scheduleTimeTable(TimeTable& tTable)
 
 void Model::schedule()
 {
-    qDebug() << "CartProducts: ";
     auto allProduct = cartProduct();
-    for (auto var : allProduct) {
-        var.printDebug();
-        qDebug() << "------------------------------";
-    }
     timeTables.clear();
     for (auto& tTable : allProduct)
     {
