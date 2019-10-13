@@ -120,7 +120,6 @@
      <string>File</string>
     </property>
     <addaction name="newSchedule"/>
-    <addaction name="actionOpen"/>
    </widget>
    <widget class="QMenu" name="menuActions">
     <property name="title">
