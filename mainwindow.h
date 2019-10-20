@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <QTableWidget>
-#include "data.h"
 #include "model.h"
 #include "timetable.h"
 #include <array>
