@@ -104,7 +104,6 @@ void Model::schedule()
 {
     auto allProduct = cartProduct();
     timeTables.clear();
-    qDebug() << model.size();
     for (auto& tTable : allProduct)
     {
         auto stTable = scheduleTimeTable(tTable);
