@@ -49,6 +49,7 @@ void TimeTable::colourize()
 
 void TimeTable::printDebug() const
 {
+    qDebug() << "";
     for (auto& t : tTable)
     {
         qDebug() << t.first << " " << t.second.day2 << " " << t.second.start << " " << t.second.finish;

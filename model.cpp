@@ -78,6 +78,7 @@ auto Model::scheduleTimeTable(TimeTable& tTable)
 {
     TimeTable ret;
     // Sort jobs according to finish time
+    tTable.sort();
 
     // The first activity always gets selected
     size_t i = 0;
@@ -103,11 +104,15 @@ void Model::schedule()
 {
     auto allProduct = cartProduct();
     timeTables.clear();
+    qDebug() << model.size();
     for (auto& tTable : allProduct)
     {
         auto stTable = scheduleTimeTable(tTable);
-        stTable.colourize();
-        timeTables.push_back(stTable);
+        if(stTable.size() == model.size())
+        {
+            stTable.colourize();
+            timeTables.push_back(stTable);
+        }
     }
 }
 
