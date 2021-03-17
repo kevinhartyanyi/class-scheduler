@@ -56,4 +56,4 @@ You will now see an executable in the folder, that you can run.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/kevinhartyanyi/class-scheduler/blob/master/LICENSE) file for details
